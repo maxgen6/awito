@@ -38,6 +38,7 @@ modalItem.addEventListener('click', event => {
             modalItem.classList.add('hide');
     }
 });
+
 //закрытие на esc
 window.onkeydown = event => {
     if(event.keyCode == 27) {
