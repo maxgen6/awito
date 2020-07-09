@@ -1,11 +1,19 @@
 'use strict';
 
+const dataBase = [];
+
 const modalAdd = document.querySelector('.modal__add'),
     btnAdd = document.querySelector('.add__ad'),
     modalBtnSubmit = document.querySelector('.modal__btn-submit'),
     modalSubmit = document.querySelector('.modal__submit'),
-    catalog = document.querySelector('.catalog'),
-    modalItem = document.querySelector('.modal__item');
+    card = document.querySelectorAll('.card'),
+    modalItem = document.querySelector('.modal__item'),
+    modalBtnWarning = document.querySelector('.modal__btn-warning');
+
+const elementsModalSubmit = [...modalSubmit.elements]
+    .filter(elem => elem.tagName !== 'BUTTON');
+
+
 
 btnAdd.addEventListener('click', () => {
     modalAdd.classList.remove('hide');
@@ -23,13 +31,33 @@ modalAdd.addEventListener('click', event => {
 
 });
 
+modalSubmit.addEventListener('input', () => {
+    const validForm = elementsModalSubmit.every(elem => elem.value);
+    modalBtnSubmit.disabled = !validForm; //блокировка кнопки
+    modalBtnWarning.style.display =  validForm ? 'none' : '';
+});
+
+modalSubmit.addEventListener('submit',  event => {
+    event.preventDefault();
+    const itemObj = {};
+    for (const elem of elementsModalSubmit) {
+        itemObj[elem.name] = elem.value; // в объект добавили
+    }
+    dataBase.push(itemObj); //добавили в массив объект
+    console.log(dataBase);
+    modalAdd.classList.add('hide');
+    modalSubmit.reset();
+});
+
 //дз
-catalog.addEventListener('click', event => {
+card.forEach((item) => {
+item.addEventListener('click', event => {
     let target = event.target;
-    if(target.closest('.catalog')){
+    if(target.closest('.card')){
         modalItem.classList.remove('hide');
     }
 });
+})
 
 modalItem.addEventListener('click', event => {
     let target = event.target;
@@ -47,3 +75,5 @@ window.onkeydown = event => {
         modalItem.classList.add('hide'); 
     }
 };
+
+
